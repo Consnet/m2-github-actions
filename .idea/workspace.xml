@@ -27,13 +27,15 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "F:/Projects/m2-github-actions/code-sniffer",
+    "last_opened_file_path": "F:/Projects/m2-github-actions/mess-detector",
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\Projects\m2-github-actions\mess-detector" />
+      <recent name="F:\Projects\m2-github-actions" />
       <recent name="F:\Projects\m2-github-actions\code-sniffer" />
       <recent name="F:\Projects\m2-github-actions\phpstan" />
     </key>
@@ -49,7 +51,7 @@
       <workItem from="1665437935699" duration="4992000" />
       <workItem from="1665498912032" duration="2757000" />
       <workItem from="1665510105332" duration="9087000" />
-      <workItem from="1665616570580" duration="199000" />
+      <workItem from="1665616570580" duration="900000" />
     </task>
     <servers />
   </component>

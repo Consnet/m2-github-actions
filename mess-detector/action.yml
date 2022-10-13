@@ -1,0 +1,40 @@
+name: "PHPMD Static Analysis Action"
+author: "Brian Maunde"
+description: "An action for performing the PHPMD static analysis"
+
+inputs:
+  php_version:
+    required: true
+    default: "8.1"
+    description: "PHP version to be set up for setting up magento and performing analysis"
+
+  extensions_path:
+    required: true
+    default: "app/code"
+    description: "The relative location in the current repository that contains the extensions"
+
+  exclusions:
+    required: true
+    default: "*/tests/*"
+    description: "The filter for files to be excluded from testing. By default, it should excludes tests"
+
+runs:
+  using: composite
+  steps:
+    - name: Perform Checkout
+      uses: actions/checkout@v3
+
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ inputs.php_version }}
+        tools: cs2pr,phpmd
+        coverage: none
+
+    - name: Perform Analysis
+      shell: bash
+      run: phpmd ${{ inputs.extensions_path }} github $GITHUB_ACTION_PATH/ruleset.xml --exclude '${{ inputs.exclusions }}'
+
+branding:
+  icon: "code"
+  color: "green"
