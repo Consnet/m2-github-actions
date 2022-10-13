@@ -83,8 +83,7 @@ runs:
       shell: bash
       env:
         COMPOSER_AUTH: ${{ inputs.composer_auth }}
-      run: |
-        cp -r ${{ inputs.extensions_path }} ${{ inputs.m2_home }}/app/code
+      run: cp -r ${{ inputs.extensions_path }} ${{ inputs.m2_home }}/app/code
 
     - name: Build Magento
       shell: bash

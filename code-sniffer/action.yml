@@ -54,13 +54,11 @@ runs:
 
     - name: Set Up Problem Matcher
       shell: bash
-      run: |
-        echo "::add-matcher::$GITHUB_ACTION_PATH/problem-matcher.json"
+      run: echo "::add-matcher::$GITHUB_ACTION_PATH/problem-matcher.json"
 
     - name: Perform Analysis
       shell: bash
-      run: |
-        ~/.composer/vendor/bin/phpcs --report=checkstyle --severity=${{ inputs.phpcs_severity }} --standard=${{ inputs.phpcs_standard }} ${{ inputs.extensions_path }}
+      run: ~/.composer/vendor/bin/phpcs --report=checkstyle --severity=${{ inputs.phpcs_severity }} --standard=${{ inputs.phpcs_standard }} ${{ inputs.extensions_path }}
 
 branding:
   icon: "code"
