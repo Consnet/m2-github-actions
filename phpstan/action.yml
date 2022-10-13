@@ -18,6 +18,10 @@ inputs:
     default: "magento/project-community-edition"
     description: "The edition of magento to use - whether open source or commerce"
 
+  composer_packages:
+    required: false
+    description: "Additional composer packages required, space separated"
+
   composer_version:
     required: true
     default: "2"
@@ -77,6 +81,9 @@ runs:
         COMPOSER_AUTH: ${{ inputs.composer_auth }}
       run: |
         cd ${{ inputs.m2_home }}
+        ADDITIONAL_COMPOSER_PACKAGES = ${{ inputs.composer_packages }}
+        echo "Additional packages: ${ADDITIONAL_COMPOSER_PACKAGES}"
+        [[ -z "$ADDITIONAL_COMPOSER_PACKAGES" ]] && composer require ${ADDITIONAL_COMPOSER_PACKAGES} --no-update
         composer install --prefer-dist
 
     - name: Copy Extensions
