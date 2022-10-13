@@ -20,7 +20,7 @@ inputs:
 
   minimum_lines:
     required: true
-    default: "5"
+    default: "13"
     description: "The minimum number of lines to trigger a copy-paste detection"
 
 runs:
@@ -33,7 +33,7 @@ runs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ inputs.php_version }}
-        tools: cs2pr,phpcpd
+        tools: phpcpd
         coverage: none
 
     - name: Perform Analysis
