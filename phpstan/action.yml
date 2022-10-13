@@ -81,9 +81,9 @@ runs:
         COMPOSER_AUTH: ${{ inputs.composer_auth }}
       run: |
         cd ${{ inputs.m2_home }}
-        ADDITIONAL_COMPOSER_PACKAGES=${{ inputs.composer_packages }}
+        ADDITIONAL_COMPOSER_PACKAGES="${{ inputs.composer_packages }}"
         echo "Additional packages: ${ADDITIONAL_COMPOSER_PACKAGES}"
-        [[ -z "$ADDITIONAL_COMPOSER_PACKAGES" ]] && composer require ${ADDITIONAL_COMPOSER_PACKAGES} --no-update
+        [[ -n "$ADDITIONAL_COMPOSER_PACKAGES" ]] && composer require ${ADDITIONAL_COMPOSER_PACKAGES} --no-update
         composer install --prefer-dist
 
     - name: Copy Extensions
