@@ -1,0 +1,45 @@
+name: "PHPCPD Static Analysis Action"
+author: "Brian Maunde"
+description: "An action for performing the PHPCPD static analysis"
+
+inputs:
+  php_version:
+    required: true
+    default: "8.1"
+    description: "PHP version to be set up for setting up magento and performing analysis"
+
+  extensions_path:
+    required: true
+    default: "app/code"
+    description: "The relative location in the current repository that contains the extensions"
+
+  exclusions:
+    required: true
+    default: "*Test.php"
+    description: "The filter for files to be excluded from testing. By default, it should excludes tests"
+
+  minimum_lines:
+    required: true
+    default: "5"
+    description: "The minimum number of lines to trigger a copy-paste detection"
+
+runs:
+  using: composite
+  steps:
+    - name: Perform Checkout
+      uses: actions/checkout@v3
+
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ inputs.php_version }}
+        tools: cs2pr,phpcpd
+        coverage: none
+
+    - name: Perform Analysis
+      shell: bash
+      run: phpcpd ${{ inputs.extensions_path }} --fuzzy --min-lines=${{ inputs.minimum_lines }} --exclude=${{ inputs.exclusions }}
+
+branding:
+  icon: "code"
+  color: "green"
