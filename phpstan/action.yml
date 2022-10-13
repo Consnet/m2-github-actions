@@ -1,0 +1,111 @@
+name: "PHPStan Static Analysis Action"
+author: "Brian Maunde"
+description: "An action for performing the PHPStan static analysis"
+
+inputs:
+  php_version:
+    required: true
+    default: "8.1"
+    description: "PHP version to be set up for setting up magento and performing analysis"
+
+  composer_repository:
+    required: true
+    default: "https://repo.magento.com/"
+    description: "The composer repository to use for setting up magento and other extensions"
+
+  magento_edition:
+    required: true
+    default: "magento/project-community-edition"
+    description: "The edition of magento to use - whether open source or commerce"
+
+  composer_version:
+    required: true
+    default: "2"
+    description: "The version of composer to use"
+
+  magento_version:
+    required: true
+    default: "2.4.5"
+    description: "The version of magento to set up"
+
+  extensions_path:
+    required: true
+    default: "app/code"
+    description: "The relative location in the current repository that contains the extensions"
+
+  composer_auth:
+    required: false
+    description: "The authentication credentials to the composer repository. If no authentication is required, skip this"
+
+  phpstan_level:
+    required: false
+    default: "1"
+    description: "The analysis level for PHPStan. The default level is 1"
+
+  config_file_path:
+    required: false
+    description: "The relative path to the neon config file within the repository"
+
+  m2_home:
+    required: true
+    default: "~/m2"
+    description: "This is the path in which magento will be set up "
+
+
+runs:
+  using: composite
+  steps:
+    - name: Perform Checkout
+      uses: actions/checkout@v3
+
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ inputs.php_version }}
+        tools: cs2pr,composer:v${{ inputs.composer_version }}
+        coverage: none
+
+    - name: Set up Magento
+      shell: bash
+      env:
+        COMPOSER_AUTH: ${{ inputs.composer_auth }}
+      run: composer create-project --repository=${{ inputs.composer_repository }} --no-plugins --no-install --no-interaction ${{ inputs.magento_edition }} ${{ inputs.m2_home }} "${{ inputs.magento_version }}"
+
+    - name: Set and install
+      shell: bash
+      env:
+        COMPOSER_AUTH: ${{ inputs.composer_auth }}
+      run: |
+        cd ${{ inputs.m2_home }}
+        composer install --prefer-dist
+
+    - name: Copy Extensions
+      shell: bash
+      env:
+        COMPOSER_AUTH: ${{ inputs.composer_auth }}
+      run: |
+        cp -r ${{ inputs.extensions_path }} ${{ inputs.m2_home }}/app/code
+
+    - name: Build Magento
+      shell: bash
+      run: |
+        cd ${{ inputs.m2_home }}
+        bin/magento module:enable --all
+        bin/magento setup:di:compile
+
+    - name: Perform Analysis
+      shell: bash
+      run: |
+        CONFIGURATION_FILE=${{ inputs.config_file_path }}
+        [[ -z "$CONFIGURATION_FILE" ]] && CONFIGURATION_FILE=${{ inputs.m2_home }}/dev/tests/static/testsuite/Magento/Test/Php/_files/phpstan/phpstan.neon
+        echo "Configuration file: ${CONFIGURATION_FILE}"
+        echo "Level: ${{ inputs.phpstan_level }}"
+        cd ${{ inputs.m2_home }}
+        vendor/bin/phpstan analyse app/code \
+        --level ${{ inputs.phpstan_level }} \
+        --configuration ${CONFIGURATION_FILE} \
+        --error-format=checkstyle | cs2pr
+
+branding:
+  icon: "code"
+  color: "green"

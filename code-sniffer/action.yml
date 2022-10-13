@@ -1,0 +1,67 @@
+name: "PHPCS Static Analysis Action"
+author: "Brian Maunde"
+description: "An action for performing the PHPCS static analysis"
+
+inputs:
+  php_version:
+    required: true
+    default: "8.1"
+    description: "PHP version to be set up for setting up magento and performing analysis"
+
+  composer_version:
+    required: true
+    default: "2"
+    description: "The version of composer to use"
+
+  extensions_path:
+    required: true
+    default: "app/code"
+    description: "The relative location in the current repository that contains the extensions"
+
+  phpcs_standard:
+    required: true
+    default: "Magento2"
+    description: "The standard to use for analysis"
+
+  m2_standard_version:
+    required: true
+    default: "*"
+    description: "The version of the magento/magento-coding-standard dependency that defines the Magento2 standard"
+
+  phpcs_severity:
+    required: true
+    default: "1"
+    description: "The minimum severity of issues to report. The default level is 1"
+
+runs:
+  using: composite
+  steps:
+    - name: Perform Checkout
+      uses: actions/checkout@v3
+
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ inputs.php_version }}
+        tools: cs2pr,composer:v${{ inputs.composer_version }}
+        coverage: none
+
+    - name: Install and Register Coding Standard
+      shell: bash
+      run: |
+        composer global require "magento/magento-coding-standard:${{ inputs.m2_standard_version }}"
+        ~/.composer/vendor/bin/phpcs --config-set installed_paths ../../magento/magento-coding-standard/,../../phpcompatibility/php-compatibility/PHPCompatibility
+
+    - name: Set Up Problem Matcher
+      shell: bash
+      run: |
+        echo "::add-matcher::$GITHUB_ACTION_PATH/problem-matcher.json"
+
+    - name: Perform Analysis
+      shell: bash
+      run: |
+        ~/.composer/vendor/bin/phpcs --report=checkstyle --severity=${{ inputs.phpcs_severity }} --standard=${{ inputs.phpcs_standard }} ${{ inputs.extensions_path }}
+
+branding:
+  icon: "code"
+  color: "green"
