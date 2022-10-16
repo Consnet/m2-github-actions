@@ -75,6 +75,17 @@ runs:
         COMPOSER_AUTH: ${{ inputs.composer_auth }}
       run: composer create-project --repository=${{ inputs.composer_repository }} --no-plugins --no-install --no-interaction ${{ inputs.magento_edition }} ${{ inputs.m2_home }} "${{ inputs.magento_version }}"
 
+    - name: Get Composer Cache Directory
+      shell: bash
+      id: composer-cache
+      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+    - name: Cache Composer Packages
+      uses: actions/cache@v3
+      with:
+        key:  ${{ runner.os }}-composer-${{ inputs.magento_edition}}-${{ inputs.magento_version}}
+        path: ${{ steps.composer-cache.outputs.dir }}
+
     - name: Set and install
       shell: bash
       env:
