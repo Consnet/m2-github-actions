@@ -78,7 +78,9 @@ runs:
     - name: Get Composer Cache Directory
       shell: bash
       id: composer-cache
-      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      run: |
+        echo "::set-output name=dir::$(composer config cache-files-dir)"
+        composer config cache-files-dir
 
     - name: Cache Composer Packages
       uses: actions/cache@v3
