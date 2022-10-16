@@ -86,13 +86,12 @@ runs:
       with:
         key:  ${{ runner.os }}-composer-${{ inputs.magento_edition}}-${{ inputs.magento_version}}
         path: ${{ steps.composer-cache.outputs.dir }}
-        restore-keys: |
-          ${{ runner.os }}-composer-
 
     - name: Set and install
       shell: bash
       env:
         COMPOSER_AUTH: ${{ inputs.composer_auth }}
+        COMPOSER_CACHE_DIR: ${{ steps.composer-cache.outputs.dir }}
       run: |
         cd ${{ inputs.m2_home }}
         ADDITIONAL_COMPOSER_PACKAGES="${{ inputs.composer_packages }}"
