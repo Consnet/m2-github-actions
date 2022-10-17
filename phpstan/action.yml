@@ -43,8 +43,8 @@ inputs:
 
   phpstan_level:
     required: false
-    default: "1"
-    description: "The analysis level for PHPStan. The default level is 1"
+    default: "5"
+    description: "The analysis level for PHPStan. The default level is 5 - intentionally avoiding type hints"
 
   config_file_path:
     required: false
