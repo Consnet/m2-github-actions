@@ -106,6 +106,7 @@ runs:
       run: |
         mkdir -p ${{ inputs.m2_home }}/app/code
         cp -r ${{ inputs.extensions_path }} ${{ inputs.m2_home }}/app/code
+        cp $GITHUB_ACTION_PATH/phpstan.neon ${{ inputs.m2_home }}
 
     - name: Build Magento
       shell: bash
@@ -118,7 +119,7 @@ runs:
       shell: bash
       run: |
         CONFIGURATION_FILE=${{ inputs.config_file_path }}
-        [[ -z "$CONFIGURATION_FILE" ]] && CONFIGURATION_FILE=${{ inputs.m2_home }}/dev/tests/static/testsuite/Magento/Test/Php/_files/phpstan/phpstan.neon
+        [[ -z "$CONFIGURATION_FILE" ]] && CONFIGURATION_FILE=${{ inputs.m2_home }}/phpstan.neon
         echo "Configuration file: ${CONFIGURATION_FILE}"
         echo "Level: ${{ inputs.phpstan_level }}"
         cd ${{ inputs.m2_home }}
