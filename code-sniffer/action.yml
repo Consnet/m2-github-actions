@@ -46,7 +46,9 @@ runs:
         tools: cs2pr,composer:v${{ inputs.composer_version }}
         coverage: none
     # DELETE THIS    
-    - run: echo "DIGITRADE Debug..."
+    - name: DIGITRADE Debug
+      run: echo "DIGITRADE Debug..."
+      shell: bash
     # END DELETE THIS
     - name: Install and Register Coding Standard
       shell: bash
