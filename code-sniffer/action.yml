@@ -48,6 +48,8 @@ runs:
     # DELETE THIS    
     - name: DIGITRADE Debug
       run: echo "DIGITRADE Debug..."
+      shell: bash
+    - name: DIGITRADE List
       run: ls -la /home/runner/.composer
       shell: bash
     # END DELETE THIS
