@@ -45,7 +45,9 @@ runs:
         php-version: ${{ inputs.php_version }}
         tools: cs2pr,composer:v${{ inputs.composer_version }}
         coverage: none
-
+    # DELETE THIS    
+    - run: echo "DIGITRADE Debug..."
+    # END DELETE THIS
     - name: Install and Register Coding Standard
       shell: bash
       run: |
