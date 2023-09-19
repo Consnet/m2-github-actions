@@ -48,6 +48,7 @@ runs:
     # DELETE THIS    
     - name: DIGITRADE Debug
       run: echo "DIGITRADE Debug..."
+      run: ls -la /home/runner/.composer
       shell: bash
     # END DELETE THIS
     - name: Install and Register Coding Standard
