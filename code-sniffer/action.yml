@@ -50,7 +50,7 @@ runs:
       run: echo "DIGITRADE Debug..."
       shell: bash
     - name: DIGITRADE List
-      run: ls -la /home/runner/.composer
+      run: cat /home/runner/.composer/composer.json
       shell: bash
     # END DELETE THIS
     - name: Install and Register Coding Standard
