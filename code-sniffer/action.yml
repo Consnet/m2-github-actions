@@ -46,17 +46,10 @@ runs:
         tools: cs2pr,composer:v${{ inputs.composer_version }}
         coverage: none
 
-    # DELETE THIS    
-    - name: DIGITRADE Debug
-      run: echo "DIGITRADE Debug..."
-      shell: bash
-    - name: DIGITRADE List
-      run: cat /home/runner/.composer/composer.json
-      shell: bash
-    - name: DIGITRADE Trust the global composer package
+    # Trust the global compiser package: dealerdirect/phpcodesniffer-composer-installer
+    - name: DIGITRADE: Trust the global composer package dealerdirect/phpcodesniffer-composer-installer
       run: composer global config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
       shell: bash
-    # END DELETE THIS
     
     - name: Install and Register Coding Standard
       shell: bash
