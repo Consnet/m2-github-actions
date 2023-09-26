@@ -45,11 +45,6 @@ runs:
         php-version: ${{ inputs.php_version }}
         tools: cs2pr,composer:v${{ inputs.composer_version }}
         coverage: none
-    - name: Install and Register Coding Standard
-      shell: bash
-      run: |
-        composer global require "magento/magento-coding-standard:${{ inputs.m2_standard_version }}"
-        ~/.composer/vendor/bin/phpcs --config-set installed_paths ../../magento/magento-coding-standard/,../../phpcompatibility/php-compatibility/PHPCompatibility
 
     # DELETE THIS    
     - name: DIGITRADE Debug
@@ -59,6 +54,13 @@ runs:
       run: cat /home/runner/.composer/composer.json
       shell: bash
     # END DELETE THIS
+    
+    - name: Install and Register Coding Standard
+      shell: bash
+      run: |
+        composer global require "magento/magento-coding-standard:${{ inputs.m2_standard_version }}"
+        ~/.composer/vendor/bin/phpcs --config-set installed_paths ../../magento/magento-coding-standard/,../../phpcompatibility/php-compatibility/PHPCompatibility
+
     - name: Set Up Problem Matcher
       shell: bash
       run: echo "::add-matcher::$GITHUB_ACTION_PATH/problem-matcher.json"
