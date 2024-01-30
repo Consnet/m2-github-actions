@@ -54,8 +54,8 @@ runs:
     - name: Install and Register Coding Standard
       shell: bash
       run: |
-        composer global require "magento/magento-coding-standard:${{ inputs.m2_standard_version }}" \
-        && ~/.composer/vendor/bin/phpcs --config-set installed_paths ../../magento/magento-coding-standard/,../../phpcompatibility/php-compatibility/PHPCompatibility
+        composer global require "magento/magento-coding-standard:${{ inputs.m2_standard_version }}"
+        ~/.composer/vendor/bin/phpcs --config-set installed_paths ../../magento/magento-coding-standard/,../../phpcompatibility/php-compatibility/PHPCompatibility
 
     - name: Set Up Problem Matcher
       shell: bash
@@ -63,7 +63,7 @@ runs:
 
     - name: Perform Analysis
       shell: bash
-      run: ~/.composer/vendor/bin/phpcs --report=checkstyle --severity=${{ inputs.phpcs_severity }} --standard=${{ inputs.phpcs_standard }} ${{ inputs.extensions_path }}
+      run: ~/.composer/vendor/bin/phpcs --config-set installed_paths ../../magento/magento-coding-standard/,../../phpcompatibility/php-compatibility --report=checkstyle --severity=${{ inputs.phpcs_severity }} --standard=${{ inputs.phpcs_standard }} ${{ inputs.extensions_path }}
 
 branding:
   icon: "code"
