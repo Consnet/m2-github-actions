@@ -55,6 +55,7 @@ runs:
       shell: bash
       run: |
         composer global require "magento/magento-coding-standard:${{ inputs.m2_standard_version }}"
+        composer global require "phpcompatibility/php-compatibility"
         ~/.composer/vendor/bin/phpcs --config-set installed_paths ~/.composer/vendor/magento/magento-coding-standard/,~/.composer/vendor/phpcompatibility/php-compatibility/PHPCompatibility
 
     - name: Set Up Problem Matcher
