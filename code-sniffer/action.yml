@@ -54,7 +54,10 @@ runs:
     - name: Install and Register Coding Standard
       shell: bash
       run: |
-        composer global require "phpcompatibility/php-compatibility"  ~/.composer/vendor/bin/phpcs installed_paths ~/.composer/vendor/phpcompatibility/php-compatibility  composer global require "magento/magento-coding-standard:${{ inputs.m2_standard_version }}"  ~/.composer/vendor/bin/phpcs installed_paths ~/.composer/vendor/magento/magento-coding-standard/,~/.composer/vendor/phpcompatibility/php-compatibility
+        composer global require "phpcompatibility/php-compatibility"  
+        ~/.composer/vendor/bin/phpcs --runtime-set installed_paths ~/.composer/vendor/phpcompatibility/php-compatibility  
+        composer global require "magento/magento-coding-standard:${{ inputs.m2_standard_version }}"  
+        ~/.composer/vendor/bin/phpcs --runtime-set installed_paths ~/.composer/vendor/magento/magento-coding-standard/,~/.composer/vendor/phpcompatibility/php-compatibility
 
     - name: Set Up Problem Matcher
       shell: bash
